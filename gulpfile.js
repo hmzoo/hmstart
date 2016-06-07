@@ -1,6 +1,6 @@
-var gulp = require('gulp'),
-    plumber = require('gulp-plumber'),
-    rename = require('gulp-rename');
+var gulp = require('gulp');
+var plumber = require('gulp-plumber');
+var rename = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
 var coffee = require('gulp-coffee');
 var concat = require('gulp-concat');
@@ -9,7 +9,16 @@ var imagemin = require('gulp-imagemin'),
     cache = require('gulp-cache');
 var less = require('gulp-less');
 var jade = require('gulp-jade');
+var express = require('express');
 var browserSync = require('browser-sync');
+
+var server;
+
+gulp.task('server',function(){
+server=express();
+server.use(express.static('dist'));
+server.listen(8000)
+});
 
 gulp.task('browser-sync', function() {
   browserSync({
