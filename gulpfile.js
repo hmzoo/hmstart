@@ -12,8 +12,14 @@ var jade = require('gulp-jade');
 var express = require('express');
 var browserSync = require('browser-sync');
 
-var server;
 
+var server;
+var errorHandler=function (error) {
+  console.log(error.message);
+  this.emit('end');
+}
+
+//SERVER
 gulp.task('server',function(){
 server=express();
 server.use(express.static('dist'));
@@ -32,6 +38,7 @@ gulp.task('bs-reload', function () {
   browserSync.reload();
 });
 
+//BUILD
 gulp.task('images', function(){
   gulp.src('src/images/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
@@ -44,33 +51,34 @@ gulp.task('jade', function() {
         .pipe(gulp.dest('dist/')); // tell gulp our output folder
 });
 
-gulp.task('less', function(){
+gulp.task('styles', function(){
   gulp.src(['src/styles/**/*.less'])
-    .pipe(plumber({
-      errorHandler: function (error) {
-        console.log(error.message);
-        this.emit('end');
-    }}))
-    .pipe(less())
+    .pipe(less()).on('error',errorHandler)
     .pipe(autoprefixer('last 2 versions'))
     .pipe(gulp.dest('dist/styles/'))
 });
 
 gulp.task('coffee', function(){
   return gulp.src('src/scripts/**/*.coffee')
-    .pipe(plumber({
-      errorHandler: function (error) {
-        console.log(error.message);
-        this.emit('end');
-    }}))
-    .pipe(coffee({bare: true}))
+    .pipe(coffee({bare: true})).on('error',errorHandler)
     .pipe(gulp.dest('dist/scripts/'))
 });
 
-gulp.task('default', ['less','coffee','jade']);
+//BUNDLE
+gulp.task('bundle',function(){
+  return browserify('./src/scripts')
+  .bundle()
+  .pipe(source('app.js'))
+  .pipe(gulp.dest('dist/scripts/'))
 
+})
+
+
+//WATCH
 gulp.task('watch',  function(){
   gulp.watch("src/styles/**/*.less", ['styles']);
   gulp.watch("src/scripts/**/*.coffee", ['scripts']);
   gulp.watch('src/templates/**/*.jade', ['jade']);
 });
+//TASKS
+gulp.task('default', ['styles','coffee','jade']);
