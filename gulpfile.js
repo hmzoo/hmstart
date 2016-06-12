@@ -12,6 +12,10 @@ var jade = require('gulp-jade');
 var express = require('express');
 var browserSync = require('browser-sync');
 
+var browserify = require('browserify');
+var coffeeify = require('coffeeify');
+var source = require('vinyl-source-stream');
+
 
 var server;
 var errorHandler=function (error) {
@@ -45,7 +49,7 @@ gulp.task('images', function(){
 
 gulp.task('template', function() {
     return gulp.src('src/templates/**/*.jade')
-        .pipe(jade()) // pip to jade plugin
+        .pipe(jade({pretty:true})) // pip to jade plugin
         .pipe(gulp.dest('dist/')); // tell gulp our output folder
 });
 
@@ -53,10 +57,24 @@ gulp.task('styles', function(){
   gulp.src(['src/styles/**/*.less'])
     .pipe(less()).on('error',errorHandler)
     .pipe(autoprefixer('last 2 versions'))
-    .pipe(gulp.dest('dist/styles/'))
+    .pipe(gulp.dest('dist/'))
 });
 
+
+
+var bundle=browserify({
+  entries:['./src/scripts/main.coffee']
+});
+bundle.transform(coffeeify);
+
 gulp.task('scripts', function(){
+  return bundle
+  .bundle()
+  .pipe(source('bundle.js'))
+  .pipe(gulp.dest('dist/'))
+});
+
+gulp.task('coffee', function(){
   return gulp.src('src/scripts/**/*.coffee')
     .pipe(coffee({bare: true})).on('error',errorHandler)
     .pipe(gulp.dest('dist/scripts/'))
@@ -76,7 +94,7 @@ gulp.task('bundle',function(){
 gulp.task('watch',  function(){
   gulp.watch("src/styles/**/*.less", ['styles']);
   gulp.watch("src/scripts/**/*.coffee", ['scripts']);
-  gulp.watch('src/templates/**/*.jade', ['jade']);
+  gulp.watch('src/templates/**/*.jade', ['template']);
 });
 //TASKS
-gulp.task('default', ['styles','scripts','jade']);
+gulp.task('default', ['semantic','scripts','template']);

@@ -1,4 +1,7 @@
+React=require('react')
+{ div, h1, p, a } = React.DOM
 
-console.log("test")
-x=0
-console.log(x)
+module.exports = React.createClass
+  render: ->
+    div {}, "hello",
+      p {}, "cool"
