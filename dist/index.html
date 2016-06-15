@@ -4,6 +4,7 @@
     <link href="/style.css" rel="stylesheet">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/uikit.min.js"></script>
+    <script src="/js/components/sortable.min.js"></script>
   
   
     <title>HM start</title>
@@ -49,6 +50,12 @@
           </ul>
       </div>
   </div>
+  
+  <ul id="sortabletest" class="uk-sortable" data-uk-sortable="{animation:200, dragCustomClass:'dragging'}">
+      <li data-id="1" data-name="Item 1">item 1</li>
+      <li data-id="2" data-name="Item 2">item 2</li>
+      <li data-id="3" data-name="Item 3">item 3</li>
+  </ul>
   <hr/>
   <div>footer</div>
     </div>
