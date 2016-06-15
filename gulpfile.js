@@ -7,6 +7,7 @@ var browserSync = require('browser-sync');
 var gutil = require('gulp-util');
 var browserify = require('browserify');
 var source= require('vinyl-source-stream');
+var babelify = require('babelify');
 
 var server;
 var handleError=function(err) {
@@ -52,8 +53,6 @@ gulp.task('uikit_fonts', function() {
 
 });
 
-
-
 gulp.task('uikit_js', function() {
     return gulp.src('./src/bower_components/uikit/js/**')
         .pipe(gulp.dest('./dist/js'))
@@ -83,6 +82,7 @@ gulp.task('templates', function() {
 
 gulp.task('scripts',function(){
   return browserify('./src/scripts/main.js')
+  .transform(babelify)
   .bundle().on('error',handleError)
   .pipe(source('bundle.js'))
   .pipe(gulp.dest('dist'))
