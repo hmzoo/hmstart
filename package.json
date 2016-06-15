@@ -17,12 +17,19 @@
   },
   "homepage": "https://github.com/hmzoo/hmstart#readme",
   "devDependencies": {
+    "babelify": "^7.3.0",
+    "bower": "^1.7.9",
     "browser-sync": "^2.13.0",
+    "browserify": "^13.0.1",
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-compile-handlebars": "^0.6.1",
     "gulp-less": "^3.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-util": "^3.0.7"
+    "gulp-util": "^3.0.7",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "jquery": "^3.0.0"
   }
 }

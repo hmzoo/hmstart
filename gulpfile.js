@@ -5,8 +5,14 @@ var handlebars = require('gulp-compile-handlebars');
 var express = require('express');
 var browserSync = require('browser-sync');
 var gutil = require('gulp-util');
+var browserify = require('browserify');
+var source= require('vinyl-source-stream');
 
 var server;
+var handleError=function(err) {
+  console.log(err.toString());
+  this.emit('end');
+}
 
 var reload = function() {
     if (server) {
@@ -29,11 +35,31 @@ gulp.task('server', function() {
 
 gulp.task('less', function() {
     return gulp.src('./src/styles/*.less')
-        .pipe(less())
+        .pipe(less()).on('error',handleError)
         .pipe(gulp.dest('./dist'))
         .pipe(reload());
 
 });
+
+gulp.task('jquery', function() {
+    return gulp.src('./src/bower_components/jquery/dist/jquery.min.js')
+        .pipe(gulp.dest('./dist/js'))
+});
+
+gulp.task('uikit_fonts', function() {
+    return gulp.src('./src/bower_components/uikit/fonts/*')
+        .pipe(gulp.dest('./dist/fonts'))
+
+});
+
+
+
+gulp.task('uikit_js', function() {
+    return gulp.src('./src/bower_components/uikit/js/**')
+        .pipe(gulp.dest('./dist/js'))
+});
+
+gulp.task('vendors',['jquery','uikit_js','uikit_fonts']);
 
 gulp.task('templates', function() {
     var templateData = {
@@ -48,16 +74,28 @@ gulp.task('templates', function() {
     };
 
     return gulp.src('./src/templates/index.handlebars')
-        .pipe(handlebars(templateData, options))
+        .pipe(handlebars(templateData, options)).on('error',handleError)
         .pipe(rename('index.html'))
         .pipe(gulp.dest('./dist'))
         .pipe(reload());
 });
+
+
+gulp.task('scripts',function(){
+  return browserify('./src/scripts/main.js')
+  .bundle().on('error',handleError)
+  .pipe(source('bundle.js'))
+  .pipe(gulp.dest('dist'))
+  .pipe(reload());
+})
+
+
 gulp.task('watch', function() {
     gulp.watch('./src/styles/*.less', ['less']);
     gulp.watch('./src/templates/*.handlebars', ['templates']);
+    gulp.watch('./src/scripts/**', ['scripts']);
     //gulp.watch('./src/templates/*.handlebars',['templates']);
 
 });
-gulp.task('build', ['templates', 'less']);
+gulp.task('build', ['templates', 'less','vendors','scripts']);
 gulp.task('default', ['build', 'watch', 'server'])
