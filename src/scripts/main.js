@@ -1,17 +1,6 @@
-var React=require('react');
-var ReactDom=require('react-dom');
-var reactElement=React.createElement('h1',{className:'header'},"OK");
-ReactDom.render(reactElement,document.getElementById('reacttest'));
 
+var React = require('react');
+var ReactDom = require('react-dom');
+var Chat=require('./chat.react.jsx');
 
-
-
-$('#test').click(function() {
-  alert( "Handler for .click() called." );
-});
-
-$("#sortabletest").on('change.uk.sortable', function() {
-  console.log($(this));
-  var sortable = $(this).sortable('toArray');
-  console.log(sortable);
-});
+ReactDom.render(React.createElement(Chat), document.getElementById('reacttest'));

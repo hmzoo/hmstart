@@ -82,7 +82,7 @@ gulp.task('templates', function() {
 
 gulp.task('scripts',function(){
   return browserify('./src/scripts/main.js')
-  .transform(babelify)
+  .transform(babelify, {presets: ["react"]})
   .bundle().on('error',handleError)
   .pipe(source('bundle.js'))
   .pipe(gulp.dest('dist'))

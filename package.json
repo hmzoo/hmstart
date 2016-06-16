@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/hmzoo/hmstart#readme",
   "devDependencies": {
+    "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
     "bower": "^1.7.9",
     "browser-sync": "^2.13.0",

@@ -2,6 +2,31 @@
 // shim for using process in browser
 
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+(function () {
+  try {
+    cachedSetTimeout = setTimeout;
+  } catch (e) {
+    cachedSetTimeout = function () {
+      throw new Error('setTimeout is not defined');
+    }
+  }
+  try {
+    cachedClearTimeout = clearTimeout;
+  } catch (e) {
+    cachedClearTimeout = function () {
+      throw new Error('clearTimeout is not defined');
+    }
+  }
+} ())
 var queue = [];
 var draining = false;
 var currentQueue;
@@ -26,7 +51,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = cachedSetTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -43,7 +68,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    cachedClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -55,7 +80,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        cachedSetTimeout(drainQueue, 0);
     }
 };
 
@@ -19668,17 +19693,75 @@ module.exports = require('./lib/React');
 },{"./lib/React":28}],168:[function(require,module,exports){
 var React = require('react');
 var ReactDom = require('react-dom');
-var reactElement = React.createElement('h1', { className: 'header' }, "OK");
-ReactDom.render(reactElement, document.getElementById('reacttest'));
 
-$('#test').click(function () {
-  alert("Handler for .click() called.");
+var Messages = React.createClass({
+  displayName: 'Messages',
+
+  getInitialState: function () {
+    return { messages: ["one", "two"] };
+  },
+  newMessage: function (msg) {
+    this.state.messages.push(msg);
+  },
+
+  render: function () {
+    var result = "";
+    for (var i = 0; i < this.state.messages.length; i++) {
+      result = result + this.state.messages[i] + "<br/>";
+    }
+    return React.createElement(
+      'div',
+      null,
+      result
+    );
+  }
 });
 
-$("#sortabletest").on('change.uk.sortable', function () {
-  console.log($(this));
-  var sortable = $(this).sortable('toArray');
-  console.log(sortable);
+var InputChat = React.createClass({
+  displayName: 'InputChat',
+
+  sendMessage: function (e) {
+    e.preventDefault();
+    var msg = e.currentTarget.messageinput.value.trim();
+    e.currentTarget.messageinput.value = "";
+    console.log(msg);
+  },
+  render: function () {
+    return React.createElement(
+      'form',
+      { className: 'uk-form', onSubmit: this.sendMessage },
+      React.createElement('input', { type: 'text', id: 'messageinput' }),
+      React.createElement(
+        'button',
+        { className: 'uk-button', type: 'submit' },
+        'Send'
+      )
+    );
+  }
+
 });
 
-},{"react":167,"react-dom":2}]},{},[168]);
+var Chat = React.createClass({
+  displayName: 'Chat',
+
+  render: function () {
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(Messages, null),
+      React.createElement(InputChat, null)
+    );
+  }
+});
+
+module.exports = Chat;
+
+},{"react":167,"react-dom":2}],169:[function(require,module,exports){
+
+var React = require('react');
+var ReactDom = require('react-dom');
+var Chat = require('./chat.react.jsx');
+
+ReactDom.render(React.createElement(Chat), document.getElementById('reacttest'));
+
+},{"./chat.react.jsx":168,"react":167,"react-dom":2}]},{},[169]);
