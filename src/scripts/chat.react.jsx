@@ -28,9 +28,10 @@ var InputChat = React.createClass({
     console.log(msg);
   },
   render:function(){
-    return <form className="uk-form" onSubmit={this.sendMessage} >
-      <input type="text" id="messageinput" />
-        <button className="uk-button" type="submit">Send</button>
+    return <form onSubmit={this.sendMessage} ><fieldset>
+      <span className="grid-item 9/12"><input type="text" id="messageinput" className="form-input" /></span>
+        <span className="grid-item 3/12"><button className="btn" type="submit" className="btn btn-primary">Send</button></span>
+        </fieldset>
     </form>
   }
 

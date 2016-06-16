@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "uikit": "^2.26.3"
+    "uikit": "^2.26.3",
+    "cardinal": "^3.6.1"
   }
 }
