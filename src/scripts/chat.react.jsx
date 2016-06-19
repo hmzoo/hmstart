@@ -2,20 +2,16 @@ var React = require('react');
 var ReactDom = require('react-dom');
 
 
-var Messages = React.createClass({
-  getInitialState:function(){
-    return {messages:["one","two"]};
 
-  },
-  newMessage:function(msg){
-    this.state.messages.push(msg);
-  },
+var Messages = React.createClass({
+
 
   render:function(){
-    var result="";
-    for (var i = 0; i < this.state.messages.length; i++) {
-      result=result+this.state.messages[i]+"<br/>";
-    }
+    var result=this.props.messages.map(function(msg,n=0){
+      n=n+1;
+      return <p key={n}>{msg}</p>;
+    });
+
     return <div>{result}</div>;
   }
 })
@@ -26,6 +22,7 @@ var InputChat = React.createClass({
     var msg=e.currentTarget.messageinput.value.trim();
     e.currentTarget.messageinput.value="";
     console.log(msg);
+    this.props.onMessage(msg);
   },
   render:function(){
     return <form onSubmit={this.sendMessage} ><fieldset>
@@ -40,8 +37,24 @@ var InputChat = React.createClass({
 
 
 var Chat = React.createClass({
+  getInitialState:function(){
+    return {messages:["one","two"],lastMessage:"AAA"};
+
+  },
+  newMessage:function(msg){
+    var a=this.state.messages.slice();
+    a.push(msg);
+    this.setState({messages:a,lastMessage:msg});
+
+  },
   render:function(){
-   return <div><Messages /><InputChat /></div>
+   return <div>
+     <div>{this.state.lastMessage}</div>
+     <div>
+       <Messages messages={this.state.messages}/>
+       <InputChat onMessage={this.newMessage} />
+    </div>
+  </div>
 }
 });
 
