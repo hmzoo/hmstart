@@ -1,15 +1,25 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 
+var Horizon =require ('@horizon/client');
+const horizon = Horizon({host: 'localhost:8181'});
+
+var Message = React.createClass({
+
+
+  render:function(){
+
+    return <div><b>{this.props.from} :</b>{this.props.children}</div>;
+  }
+})
+
 
 
 var Messages = React.createClass({
 
-
   render:function(){
-    var result=this.props.messages.map(function(msg,n=0){
-      n=n+1;
-      return <p key={n}>{msg}</p>;
+    var result=this.props.messages.map(function(msg){
+      return <Message from={msg.from}>{msg.content}</Message>;
     });
 
     return <div>{result}</div>;
@@ -22,7 +32,7 @@ var InputChat = React.createClass({
     var msg=e.currentTarget.messageinput.value.trim();
     e.currentTarget.messageinput.value="";
     console.log(msg);
-    this.props.onMessage(msg);
+    this.props.onMessage("me",msg);
   },
   render:function(){
     return <form onSubmit={this.sendMessage} ><fieldset>
@@ -38,16 +48,18 @@ var InputChat = React.createClass({
 
 var Chat = React.createClass({
   getInitialState:function(){
-    return {messages:["one","two"],lastMessage:"AAA"};
+    return {messages:[{from:"one",content:"hello"},{from:"two",content:"how are you"}],lastMessage:"AAA"};
 
   },
-  newMessage:function(msg){
+  newMessage:function(from,msg){
     var a=this.state.messages.slice();
-    a.push(msg);
+    a.push({from:from,content:msg});
     this.setState({messages:a,lastMessage:msg});
 
   },
   render:function(){
+    console.log("OK");
+    console.log(horizon);
    return <div>
      <div>{this.state.lastMessage}</div>
      <div>

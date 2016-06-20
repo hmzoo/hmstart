@@ -19694,17 +19694,36 @@ module.exports = require('./lib/React');
 var React = require('react');
 var ReactDom = require('react-dom');
 
+var Message = React.createClass({
+  displayName: 'Message',
+
+
+  render: function () {
+
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(
+        'b',
+        null,
+        this.props.from,
+        ' :'
+      ),
+      this.props.children
+    );
+  }
+});
+
 var Messages = React.createClass({
   displayName: 'Messages',
 
 
   render: function () {
-    var result = this.props.messages.map(function (msg, n = 0) {
-      n = n + 1;
+    var result = this.props.messages.map(function (msg) {
       return React.createElement(
-        'p',
-        { key: n },
-        msg
+        Message,
+        { from: msg.from },
+        msg.content
       );
     });
 
@@ -19724,7 +19743,7 @@ var InputChat = React.createClass({
     var msg = e.currentTarget.messageinput.value.trim();
     e.currentTarget.messageinput.value = "";
     console.log(msg);
-    this.props.onMessage(msg);
+    this.props.onMessage("me", msg);
   },
   render: function () {
     return React.createElement(
@@ -19757,11 +19776,11 @@ var Chat = React.createClass({
   displayName: 'Chat',
 
   getInitialState: function () {
-    return { messages: ["one", "two"], lastMessage: "AAA" };
+    return { messages: [{ from: "one", content: "hello" }, { from: "two", content: "how are you" }], lastMessage: "AAA" };
   },
-  newMessage: function (msg) {
+  newMessage: function (from, msg) {
     var a = this.state.messages.slice();
-    a.push(msg);
+    a.push({ from: from, content: msg });
     this.setState({ messages: a, lastMessage: msg });
   },
   render: function () {

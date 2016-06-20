@@ -97,5 +97,5 @@ gulp.task('watch', function() {
     //gulp.watch('./src/templates/*.handlebars',['templates']);
 
 });
-gulp.task('build', ['templates', 'less','vendors','scripts']);
+gulp.task('build', ['templates', 'less','scripts']);
 gulp.task('default', ['build', 'watch', 'server'])
