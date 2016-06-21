@@ -1,32 +1,27 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 
-var Horizon =require ('@horizon/client');
-const horizon = Horizon({host: 'localhost:8181'});
-
-var Message = React.createClass({
+var Messages = require('./messages_hz.js');
 
 
+var MessageCpnt = React.createClass({
   render:function(){
-
     return <div><b>{this.props.from} :</b>{this.props.children}</div>;
   }
-})
+});
 
 
 
-var Messages = React.createClass({
-
+var MessagesCpnt = React.createClass({
   render:function(){
     var result=this.props.messages.map(function(msg){
-      return <Message from={msg.from}>{msg.content}</Message>;
+      return <MessageCpnt from={msg.from}>{msg.content}</MessageCpnt>;
     });
-
     return <div>{result}</div>;
   }
 })
 
-var InputChat = React.createClass({
+var InputChatCpnt = React.createClass({
   sendMessage:function(e){
     e.preventDefault();
     var msg=e.currentTarget.messageinput.value.trim();
@@ -48,23 +43,35 @@ var InputChat = React.createClass({
 
 var Chat = React.createClass({
   getInitialState:function(){
-    return {messages:[{from:"one",content:"hello"},{from:"two",content:"how are you"}],lastMessage:"AAA"};
+    return {
+      messages:[]
+    };
 
+  },
+  componentDidMount:function(){
+    var self=this;
+    Messages.onDatas=function(messages){
+      self.setState({messages:messages});
+    };
+    Messages.init();
   },
   newMessage:function(from,msg){
     var a=this.state.messages.slice();
     a.push({from:from,content:msg});
-    this.setState({messages:a,lastMessage:msg});
+    //this.setState({messages:a,lastMessage:msg});
+    Messages.save(msg);
+  }
 
-  },
+  ,
+
   render:function(){
     console.log("OK");
-    console.log(horizon);
+
    return <div>
      <div>{this.state.lastMessage}</div>
      <div>
-       <Messages messages={this.state.messages}/>
-       <InputChat onMessage={this.newMessage} />
+       <MessagesCpnt messages={this.state.messages}/>
+       <InputChatCpnt onMessage={this.newMessage} />
     </div>
   </div>
 }
