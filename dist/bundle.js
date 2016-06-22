@@ -53875,10 +53875,10 @@ function extend() {
 var React = require('react');
 var ReactDom = require('react-dom');
 
-var Messages = require('./messages_hz.js');
+var MessagesDb = require('./messages_hz.js');
 
-var MessageCpnt = React.createClass({
-  displayName: 'MessageCpnt',
+var Message = React.createClass({
+  displayName: 'Message',
 
   render: function () {
     return React.createElement(
@@ -53895,13 +53895,13 @@ var MessageCpnt = React.createClass({
   }
 });
 
-var MessagesCpnt = React.createClass({
-  displayName: 'MessagesCpnt',
+var Messages = React.createClass({
+  displayName: 'Messages',
 
   render: function () {
     var result = this.props.messages.map(function (msg) {
       return React.createElement(
-        MessageCpnt,
+        Message,
         { from: msg.from },
         msg.content
       );
@@ -53914,8 +53914,8 @@ var MessagesCpnt = React.createClass({
   }
 });
 
-var InputChatCpnt = React.createClass({
-  displayName: 'InputChatCpnt',
+var InputChat = React.createClass({
+  displayName: 'InputChat',
 
   sendMessage: function (e) {
     e.preventDefault();
@@ -53961,16 +53961,16 @@ var Chat = React.createClass({
   },
   componentDidMount: function () {
     var self = this;
-    Messages.onDatas = function (messages) {
-      self.setState({ messages: messages });
+    MessagesDb.onDatas = function (messages) {
+      self.setState({ messages: messages.reverse() });
     };
-    Messages.init();
+    MessagesDb.init();
   },
   newMessage: function (from, msg) {
-    var a = this.state.messages.slice();
-    a.push({ from: from, content: msg });
+    //var a=this.state.messages.slice();
+    //a.push({from:from,content:msg});
     //this.setState({messages:a,lastMessage:msg});
-    Messages.save(msg);
+    MessagesDb.save(msg);
   },
 
   render: function () {
@@ -53987,8 +53987,8 @@ var Chat = React.createClass({
       React.createElement(
         'div',
         null,
-        React.createElement(MessagesCpnt, { messages: this.state.messages }),
-        React.createElement(InputChatCpnt, { onMessage: this.newMessage })
+        React.createElement(Messages, { messages: this.state.messages }),
+        React.createElement(InputChat, { onMessage: this.newMessage })
       )
     );
   }
@@ -54011,7 +54011,9 @@ const horizon = Horizon({ host: 'localhost:8181' });
 var Messages = {
   init: function () {
     var self = this;
-    horizon("messages").order("datetime", "descending").limit(8).watch().subscribe(function (messages) {
+    horizon("messages")
+    //.order("datetime","descending")
+    .limit(8).watch().subscribe(function (messages) {
       self.onDatas(messages);
     });
   },

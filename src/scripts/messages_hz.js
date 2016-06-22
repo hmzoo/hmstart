@@ -5,7 +5,7 @@ var Messages={
   init:function(){
     var self=this;
     horizon("messages")
-    .order("datetime","descending")
+    //.order("datetime","descending")
     .limit(8)
     .watch().
     subscribe(function(messages){

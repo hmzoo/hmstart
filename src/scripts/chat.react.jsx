@@ -1,10 +1,10 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 
-var Messages = require('./messages_hz.js');
+var MessagesDb = require('./messages_hz.js');
 
 
-var MessageCpnt = React.createClass({
+var Message = React.createClass({
   render:function(){
     return <div><b>{this.props.from} :</b>{this.props.children}</div>;
   }
@@ -12,16 +12,16 @@ var MessageCpnt = React.createClass({
 
 
 
-var MessagesCpnt = React.createClass({
+var Messages = React.createClass({
   render:function(){
     var result=this.props.messages.map(function(msg){
-      return <MessageCpnt from={msg.from}>{msg.content}</MessageCpnt>;
+      return <Message from={msg.from}>{msg.content}</Message>;
     });
     return <div>{result}</div>;
   }
 })
 
-var InputChatCpnt = React.createClass({
+var InputChat = React.createClass({
   sendMessage:function(e){
     e.preventDefault();
     var msg=e.currentTarget.messageinput.value.trim();
@@ -50,16 +50,16 @@ var Chat = React.createClass({
   },
   componentDidMount:function(){
     var self=this;
-    Messages.onDatas=function(messages){
-      self.setState({messages:messages});
+    MessagesDb.onDatas=function(messages){
+      self.setState({messages:messages.reverse()});
     };
-    Messages.init();
+    MessagesDb.init();
   },
   newMessage:function(from,msg){
-    var a=this.state.messages.slice();
-    a.push({from:from,content:msg});
+    //var a=this.state.messages.slice();
+    //a.push({from:from,content:msg});
     //this.setState({messages:a,lastMessage:msg});
-    Messages.save(msg);
+    MessagesDb.save(msg);
   }
 
   ,
@@ -70,8 +70,8 @@ var Chat = React.createClass({
    return <div>
      <div>{this.state.lastMessage}</div>
      <div>
-       <MessagesCpnt messages={this.state.messages}/>
-       <InputChatCpnt onMessage={this.newMessage} />
+       <Messages messages={this.state.messages}/>
+       <InputChat onMessage={this.newMessage} />
     </div>
   </div>
 }
