@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/hmzoo/hmstart#readme",
   "dependencies": {
-    "cardinalcss": "^3.7.0"
+    "cardinalcss": "^3.7.0",
+    "express": "^4.14.0",
+    "helmet": "^2.1.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
