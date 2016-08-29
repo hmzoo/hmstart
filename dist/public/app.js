@@ -7248,3 +7248,4 @@ module.exports = yeast;
 });
 
 var socket = io();
+var test="ok";

@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+
 var less = require('gulp-less');
 var pug = require('gulp-pug');
 var concat = require('gulp-concat');
@@ -10,6 +11,7 @@ gulp.task('less',function(){
     .pipe(gulp.dest('dist/public'))
 });
 
+
 gulp.task('pug',function(){
   return gulp.src('app/views/*.jade')
     .pipe(pug({pretty:true}))
@@ -17,8 +19,7 @@ gulp.task('pug',function(){
 });
 
 gulp.task('server', function() {
-  return gulp.src(['app/server/server.js'])
-    .pipe(concat('server.js'))
+  return gulp.src('app/server/*.js')
     .pipe(gulp.dest('./dist/'));
 });
 
@@ -27,5 +28,14 @@ gulp.task('client', function() {
     .pipe(concat('app.js'))
     .pipe(gulp.dest('./dist/public'));
 });
+
+
+
+gulp.task('watch',function(){
+  gulp.watch(['app/server/*.js'],['server']);
+  gulp.watch(['app/client/app.js'],['client']);
+  gulp.watch(['app/style.less'],['less']);
+  gulp.watch(['app/views/*.jade'],['pug']);
+})
 
 gulp.task('build', [ 'server','client','less','pug']);
