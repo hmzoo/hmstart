@@ -25,7 +25,7 @@ gulp.task('server', function() {
 
 gulp.task('client', function() {
   return gulp.src(['node_modules/socket.io-client/socket.io.js','app/client/app.js'])
-    .pipe(concat('app.js'))
+    //.pipe(concat('app.js'))
     .pipe(gulp.dest('./dist/public'));
 });
 

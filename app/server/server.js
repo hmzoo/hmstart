@@ -3,7 +3,7 @@ var express=require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-
+var hmod= require('./hmod.js');
 var helmet = require('helmet');
 
 
@@ -18,11 +18,7 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname+'/index.html');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected '+socket.id);
-  socket.on('disconnect', function(){
-    console.log('user disconnected'+socket.id);
-  });
-});
 
-server.listen(8080)
+
+server.listen(8080);
+hmod(server);
