@@ -2,15 +2,16 @@ require('dotenv').config();
 var express=require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var hmod= require('./hmod.js');
+
 var helmet = require('helmet');
+app.use(helmet());
+
+var hio= require('./hio.js');
+var hdb= require('./hdb.js');
+hdb.init();
+hdb.test();
 
 
-app.use(helmet())
-
-console.log(__dirname);
-console.log(process.env.YES);
 
 app.use(express.static(__dirname + '/public'));
 
@@ -20,5 +21,7 @@ app.get('/', function(req, res) {
 
 
 
-server.listen(8080);
-hmod(server);
+server.listen(8088);
+hio(server);
+
+console.log("Server started ...");
