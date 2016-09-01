@@ -8,8 +8,7 @@ app.use(helmet());
 
 var hio= require('./hio.js');
 var hdb= require('./hdb.js');
-hdb.init();
-hdb.test();
+
 
 
 
@@ -22,6 +21,6 @@ app.get('/', function(req, res) {
 
 
 server.listen(8088);
-hio(server);
+hio(server,hdb);
 
 console.log("Server started ...");
