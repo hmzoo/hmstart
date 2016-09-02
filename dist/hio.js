@@ -1,6 +1,7 @@
 var socketio = require('socket.io');
 
-module.exports = function(server){
+module.exports = function(server,db){
+  var db=db;
   var io=socketio.listen(server);
   io.on('connection', function(client){
     var connected=true;
