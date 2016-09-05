@@ -1,9 +1,10 @@
+var React = require('react');
 var socket = io.connect();
+
 socket.on('connect', function() {
         console.log('Connected successfully to the socket.io server.');
         });
 
-socket.on('tick', function(data) {
+var Hello=require('./hello.js');
 
-console.log("tick "+data.time+" "+data.id);
-});
+ReactDOM.render(<Hello/>, document.getElementById('app'));

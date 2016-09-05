@@ -3,18 +3,13 @@ html(lang="en")
   head
     title= pageTitle
     link(href='./style.css', rel='stylesheet')
-    script(src='socket.io.js')
-    script(src='app.js')
+    script(src='https://cdn.socket.io/socket.io-1.4.5.js')
+    script(src='https://npmcdn.com/react@15.3.1/dist/react.js')
+    script(src='https://npmcdn.com/react-dom@15.3.1/dist/react-dom.js')
+
 
   body
-    h1 Jade - node template engine
+    h1 Test
     #container.col
-      if youAreUsingJade
-        p You are amazing
-      else
-        p Get on it cool !
-      p.
-        Jade is a terse and simple
-        templating language with a
-        strong focus on performance
-        and powerful features.
+      #app
+    script(src='app.js')

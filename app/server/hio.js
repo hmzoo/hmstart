@@ -18,19 +18,6 @@ module.exports = function(server,db){
     });
 
 
-    var tick = function(){
-
-        if (!connected) {
-          return;
-        }
-
-        var dateTime = new Date();
-
-        client.emit('tick', {'time' : dateTime,'id':client.id});
-        setTimeout(tick, 5000);
-      };
-
-      tick();
 
 
   });

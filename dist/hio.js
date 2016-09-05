@@ -1,8 +1,13 @@
 var socketio = require('socket.io');
+var db, io
+
+
 
 module.exports = function(server,db){
   var db=db;
   var io=socketio.listen(server);
+
+
   io.on('connection', function(client){
     var connected=true;
     console.log('a user connected '+client.id);
@@ -12,19 +17,7 @@ module.exports = function(server,db){
       console.log('user disconnected '+client.id);
     });
 
-    var tick = function(){
 
-        if (!connected) {
-          return;
-        }
-
-        var dateTime = new Date();
-
-        client.emit('tick', {'time' : dateTime,'id':client.id});
-        setTimeout(tick, 5000);
-      };
-
-      tick();
 
 
   });
