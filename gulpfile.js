@@ -2,7 +2,7 @@ var gulp = require('gulp');
 
 var less = require('gulp-less');
 var pug = require('gulp-pug');
-var react = require('gulp-react');
+
 var concat = require('gulp-concat');
 
 var source = require('vinyl-source-stream');
