@@ -17,6 +17,11 @@ module.exports = function(server,db){
       console.log('user disconnected '+client.id);
     });
 
+    client.on('msg', function(data){
+      io.emit('msg',data);
+      console.log('msg',data);
+    });
+
 
 
 
