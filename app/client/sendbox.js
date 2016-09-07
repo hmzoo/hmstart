@@ -18,7 +18,7 @@ module.exports = React.createClass({
     },
     handleSubmit: function(e) {
         e.preventDefault();
-        this.props.onSubmit({message: this.state.textValue});
+        this.props.onSubmit({text: this.state.textValue});
         this.clearText();
     },
 

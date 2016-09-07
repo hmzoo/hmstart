@@ -4,23 +4,46 @@ var r = require('rethinkdbdash')({
     db: "hmstart"
 });
 
-var log = function(data) {
-    console.log(data);
+
+var updateUser = function(cid, onUserSaved, onUserSavedError, cpt) {
+    r.table("Users")
+        .filter({name: cid.name,secret:cid.secret})
+        .update({socketId:cid.socketId,updatedAt: Date.now()})
+        .run()
+        .then(function(response) {
+          console.log("updateUser",response);
+          if(response.replaced>0){
+            onUserSaved(cid);
+          }else{
+            newUser(cid, onUserSaved, onUserSavedError);
+          }
+
+        })
+        .error(function(err) {
+            onUserSavedError({
+                socketId: cid.socketId,
+                err: "db error"
+            });
+
+        });
 }
 
-var newRandUser = function(uid, onUserSaved, onUserSavedError, cpt) {
+var newUser = function(cid, onUserSaved, onUserSavedError, cpt) {
+    console.log("hnum", cpt);
     var cpt = (typeof cpt === 'undefined') ? 0 : cpt;
     if (cpt > 50) {
         onUserSavedError({
-            uid: uid,
+            socketId: cid.socketId,
             err: "db full"
         });
         return
     }
     var data = {
         name: (Math.floor(Math.random() * 90000) + 10000).toString(),
-        uid: uid,
-        createAt: Date.now()
+        socketId: cid.socketId,
+        secret: cid.secret,
+        createAt: Date.now(),
+        updatedAt: Date.now()
     };
 
     r.table("Users")
@@ -29,7 +52,7 @@ var newRandUser = function(uid, onUserSaved, onUserSavedError, cpt) {
         .then(function(response) {
             console.log('Get success ', response);
             if (response) {
-                newRandUser(uid, onUserSaved, onUserSavedError, cpt + 1);
+                newUser(cid, onUserSaved, onUserSavedError, cpt + 1);
             } else {
                 r.table("Users").insert(data)
                     .run()
@@ -39,7 +62,7 @@ var newRandUser = function(uid, onUserSaved, onUserSavedError, cpt) {
                     })
                     .error(function(err) {
                         onUserSavedError({
-                            uid: uid,
+                            socketId: cid.socketId,
                             err: "db error"
                         });
                         console.log('error occurred ', err);
@@ -49,7 +72,7 @@ var newRandUser = function(uid, onUserSaved, onUserSavedError, cpt) {
         })
         .error(function(err) {
             onUserSavedError({
-                uid: uid,
+                socketId: cid.socketId,
                 err: "db error"
             });
             console.log('error occurred ', err);
@@ -57,4 +80,14 @@ var newRandUser = function(uid, onUserSaved, onUserSavedError, cpt) {
 
 }
 
-newRandUser("X", log,log);
+
+var hnum = function(cid, onUserSaved, onUserSavedError) {
+    if (cid.name != "") {
+        updateUser(cid, onUserSaved, onUserSavedError);
+    } else {
+        newUser(cid, onUserSaved, onUserSavedError);
+    }
+}
+
+
+module.exports = hnum;

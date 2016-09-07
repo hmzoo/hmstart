@@ -20,6 +20,6 @@ module.exports = React.createClass({
 // Correct :)
 var TextBoxItem = React.createClass({
   render: function() {
-    return <div>{this.props.data.text}</div>;
+    return <div><b>{this.props.data.name} : </b>{this.props.data.text}</div>;
   }
 });

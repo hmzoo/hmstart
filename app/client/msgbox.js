@@ -6,13 +6,15 @@ var SendBox=require('./sendbox.js');
 
 module.exports = React.createClass({
   getInitialState: function() {
-      return {messages:[]}
+      return {
+        messages:[]
+      }
   },
   sendMessage:function(data){
-    this.props.onSendMessage(data.message);
+    this.props.onSendMessage(data);
   },
-  newMessage:function(text){
-    var msgs = this.state.messages.concat([{id:this.state.messages.length,text:text}]);
+  newMessage:function(data){
+    var msgs = this.state.messages.concat([{id:this.state.messages.length,name:data.name,text:data.text}]);
     this.setState({messages:msgs});
   },
 
