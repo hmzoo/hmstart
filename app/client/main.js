@@ -2,6 +2,7 @@ var React = require('react');
 var socket = io.connect();
 var MsgBox=require('./msgbox.js');
 var NameBox=require('./namebox.js');
+var JoinBox=require('./joinbox.js');
 
 var hcid=require('./hcid.js');
 
@@ -28,6 +29,6 @@ var emitMessage =function(data){
 
 
 
-
+var join=ReactDOM.render(<JoinBox/>, document.getElementById('joinbox'));
 var num=ReactDOM.render(<NameBox/>, document.getElementById('num'));
 var app=ReactDOM.render(<MsgBox onSendMessage={emitMessage}/>, document.getElementById('msgbox'));

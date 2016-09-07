@@ -5,7 +5,7 @@ module.exports = React.createClass({
 
     render: function() {
         return (
-            <div>
+            <div id='textbox'>
               {this.props.datas.map(function(result){
                 return (
                   <TextBoxItem key={result.id} data={result} />
