@@ -21,12 +21,14 @@ socket.on('yourId',function(msg){
   num.setName(hcid.name);
 });
 
-var emitMessage =function(data){
-  data.name=hcid.name;
-  socket.emit("msg",data);
+var emitMessage =function(content){
+  socket.emit("msg",buildData(content));
 };
 
-
+var buildData=function(content){
+  content.clientName=hcid.name;
+  return {cid:hcid.get(),content:content};
+}
 
 
 var join=ReactDOM.render(<JoinBox/>, document.getElementById('joinbox'));

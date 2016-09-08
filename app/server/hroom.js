@@ -4,22 +4,20 @@ var r = require('rethinkdbdash')({
     db: "hmstart"
 });
 
-var newRoom=function(data){
-
-
+var newRoom=function(cid,data,onRoomSaved,onRoomSavedError){
+  r.table("Rooms").insert(data)
+      .run()
+      .then(function(response) {
+          console.log('Insert success ', response);
+          onRoomSaved(cid,data);
+      })
+      .error(function(err) {
+        console.log('NewRoom ERROR ', err);
+        onRoomSavedError(cid,data,err);
+      }
 
 }
 
-
-var updateRoom=function(data){
-
-
-
-}
-
-
-
-var userJoinRoom=function(userName,roomName){
-
-
+module.exports ={
+  newRoom:newRoom
 }
