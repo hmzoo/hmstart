@@ -2,7 +2,7 @@ var socketio = require('socket.io');
 var db, io
 
 var hnum=require('./hnum.js');
-var hrooms=require('./hrooms.js');
+//var hrooms=require('./hrooms.js');
 
 
 var onUserSaved=function(data){
@@ -38,12 +38,12 @@ module.exports = function(server,database){
 
     client.on('IdWanted', function(data){
       data.socketId=client.id;
-      hnum(data,onUserSaved,onUserSavedError);
+      hnum.userIn(data,onUserSaved,onUserSavedError);
     });
 
     client.on('joinRoom', function(data){
       data.socketId=client.id;
-      hnum(data,onUserSaved,onUserSavedError);
+      hnum.userIn(data,onUserSaved,onUserSavedError);
     });
 
 

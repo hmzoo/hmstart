@@ -14,7 +14,7 @@ module.exports = React.createClass({
     this.props.onSendMessage(data);
   },
   newMessage:function(data){
-    var msgs = this.state.messages.concat([{id:this.state.messages.length,name:data.name,text:data.text}]);
+    var msgs = this.state.messages.concat([{id:this.state.messages.length,name:data.authorName,text:data.text}]);
     this.setState({messages:msgs});
   },
 

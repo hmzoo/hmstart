@@ -24,3 +24,13 @@ r.tableCreate('Users',{ primaryKey: 'name' })
 .error(function(err){
 	console.log('error while creating table ',err)
 })
+
+
+r.tableCreate('Rooms',{ primaryKey: 'name' })
+.run()
+.then(function(response){
+	console.log(response)
+})
+.error(function(err){
+	console.log('error while creating table ',err)
+})

@@ -81,7 +81,7 @@ var newUser = function(cid, onUserSaved, onUserSavedError, cpt) {
 }
 
 
-var hnum = function(cid, onUserSaved, onUserSavedError) {
+var userIn = function(cid, onUserSaved, onUserSavedError) {
     if (cid.name != "") {
         updateUser(cid, onUserSaved, onUserSavedError);
     } else {
@@ -89,5 +89,15 @@ var hnum = function(cid, onUserSaved, onUserSavedError) {
     }
 }
 
+var userOut =function(){
 
-module.exports = hnum;
+}
+
+
+module.exports = {
+
+  userIn:userIn,
+  userOut:userOut
+
+
+};

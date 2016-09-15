@@ -10,7 +10,7 @@ socket.on('connect', function() {
         console.log('Connected successfully to the socket.io server.');
         hcid.load();
         socket.emit('IdWanted',hcid.get());
-        });
+});
 socket.on('msg',function(msg){
   console.log('msg',msg);
   app.newMessage(msg);
@@ -22,11 +22,12 @@ socket.on('yourId',function(msg){
 });
 
 var emitMessage =function(content){
+  console.log(content);
   socket.emit("msg",buildData(content));
 };
 
 var buildData=function(content){
-  content.clientName=hcid.name;
+  content.authorName=hcid.name;
   return {cid:hcid.get(),content:content};
 }
 
