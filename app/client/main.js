@@ -16,22 +16,27 @@ socket.on('msg',function(msg){
   app.newMessage(msg);
 });
 socket.on('yourId',function(msg){
-  console.log('msg',msg);
-  hcid.setName(msg.name);
-  num.setName(hcid.name);
+  console.log('yourId',msg);
+  hcid.setUser(msg.name);
+  num.setName(hcid.user);
 });
 
 var emitMessage =function(content){
   console.log(content);
+  content.authorName=hcid.user;
   socket.emit("msg",buildData(content));
 };
 
+var joinRoom =function(content){
+  console.log(content);
+  socket.emit("joinRoom",buildData(content));
+};
+
 var buildData=function(content){
-  content.authorName=hcid.name;
   return {cid:hcid.get(),content:content};
 }
 
 
-var join=ReactDOM.render(<JoinBox/>, document.getElementById('joinbox'));
+var join=ReactDOM.render(<JoinBox onJoin={joinRoom}/>, document.getElementById('joinbox'));
 var num=ReactDOM.render(<NameBox/>, document.getElementById('num'));
 var app=ReactDOM.render(<MsgBox onSendMessage={emitMessage}/>, document.getElementById('msgbox'));

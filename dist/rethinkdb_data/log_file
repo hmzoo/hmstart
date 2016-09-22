@@ -1,0 +1,38 @@
+2016-09-22T15:06:54.303666492 0.110878s notice: Recursively removing directory /home/hmj/projets/hmstart/dist/rethinkdb_data/tmp
+2016-09-22T15:06:54.328837452 0.136048s notice: Initializing directory /home/hmj/projets/hmstart/dist/rethinkdb_data
+2016-09-22T15:06:54.328916996 0.136128s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/hmj/projets/hmstart/dist/rethinkdb_data' did not already exist or is empty.)
+2016-09-22T15:06:54.328941161 0.136152s notice: Running rethinkdb 2.3.5~0xenial (GCC 5.3.1)...
+2016-09-22T15:06:54.349236867 0.156450s notice: Running on Linux 4.4.0-21-generic x86_64
+2016-09-22T15:06:54.349283844 0.156495s notice: Loading data from directory /home/hmj/projets/hmstart/dist/rethinkdb_data
+2016-09-22T15:06:54.600099628 0.407311s info: Automatically using cache size of 148 MB
+2016-09-22T15:06:54.600424801 0.407636s notice: Listening for intracluster connections on port 29015
+2016-09-22T15:06:54.601105935 0.408317s notice: Listening for client driver connections on port 28015
+2016-09-22T15:06:54.601224791 0.408436s notice: Listening for administrative HTTP connections on port 8080
+2016-09-22T15:06:54.601226822 0.408438s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-22T15:06:54.601229085 0.408440s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-22T15:06:54.601231212 0.408442s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-22T15:06:54.601233686 0.408444s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-09-22T15:06:54.601236903 0.408448s notice: Server ready, "UINF03_av7" 5e322299-9ad3-457f-8b6f-1784d1d24395
+2016-09-22T15:07:23.716504986 29.523717s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2016-09-22T15:07:23.716859074 29.524071s notice: Shutting down client connections...
+2016-09-22T15:07:23.716960358 29.524172s notice: All client connections closed.
+2016-09-22T15:07:23.716965099 29.524176s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2016-09-22T15:07:23.717403968 29.524615s notice: Storage engine shut down.
+2016-09-22T15:07:25.572860517 0.075160s notice: Running rethinkdb 2.3.5~0xenial (GCC 5.3.1)...
+2016-09-22T15:07:25.575564423 0.077866s notice: Running on Linux 4.4.0-21-generic x86_64
+2016-09-22T15:07:25.575607175 0.077906s notice: Loading data from directory /home/hmj/projets/hmstart/dist/rethinkdb_data
+2016-09-22T15:07:25.638647738 0.140947s info: Automatically using cache size of 141 MB
+2016-09-22T15:07:25.639194303 0.141494s notice: Listening for intracluster connections on port 29015
+2016-09-22T15:07:25.640378938 0.142678s notice: Listening for client driver connections on port 28015
+2016-09-22T15:07:25.640555268 0.142855s notice: Listening for administrative HTTP connections on port 8080
+2016-09-22T15:07:25.640558445 0.142857s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-22T15:07:25.640563173 0.142862s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-22T15:07:25.640566433 0.142866s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-22T15:07:25.640571961 0.142871s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-09-22T15:07:25.640576236 0.142875s notice: Server ready, "UINF03_av7" 5e322299-9ad3-457f-8b6f-1784d1d24395
+2016-09-22T15:07:57.009876585 31.512176s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: Starting a new Raft election for term 1.
+2016-09-22T15:07:57.032160183 31.534459s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: Added replica on this server.
+2016-09-22T15:07:57.032228459 31.534528s info: Table 67561280-81a0-4272-b811-828dcb6de71c: Starting a new Raft election for term 1.
+2016-09-22T15:07:57.032402855 31.534702s info: Table 67561280-81a0-4272-b811-828dcb6de71c: Added replica on this server.
+2016-09-22T15:07:57.084327817 31.586627s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: This server is Raft leader for term 1. Latest log index is 0.
+2016-09-22T15:07:57.084353968 31.586653s info: Table 67561280-81a0-4272-b811-828dcb6de71c: This server is Raft leader for term 1. Latest log index is 0.

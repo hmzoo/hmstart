@@ -2,12 +2,14 @@
 
 module.exports ={
   secret : "",
-  name:"",
+  user:"",
+  room:"",
   load:function(){
     console.log("load localstorage");
     if(localStorage.getItem('secret')!= undefined){
       this.secret=localStorage.getItem('secret');
-      this.name=localStorage.getItem('name');
+      this.user=localStorage.getItem('user');
+      this.room=localStorage.getItem('room');
     }else{
       this.secret=Math.random().toString(35).substr(2, 12);
       this.name ="";
@@ -17,20 +19,28 @@ module.exports ={
   },
   save:function(){
     localStorage.setItem('secret',this.secret);
-    localStorage.setItem('name',this.name);
+    localStorage.setItem('user',this.user);
+    localStorage.setItem('room',this.room);
   },
   get:function(){
     return{
       secret:this.secret,
-      name:this.name
+      user:this.user,
+      room:this.room
+
     }
   },
-  setName:function(n){
-    this.name=n;
+  setUser:function(t){
+    this.user=t;
+    this.save();
+  },
+  setRoom:function(t){
+    this.room=t;
     this.save();
   },
   destroy:function(){
     localStorage.removeItem('secret');
-    localStorage.removeItem('name');
+    localStorage.removeItem('user');
+    localStorage.removeItem('room');
   }
 }

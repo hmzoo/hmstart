@@ -7,7 +7,7 @@ var r = require('rethinkdbdash')({
 
 var updateUser = function(cid, onUserSaved, onUserSavedError, cpt) {
     r.table("Users")
-        .filter({name: cid.name,secret:cid.secret})
+        .filter({name: cid.user,secret:cid.secret})
         .update({socketId:cid.socketId,updatedAt: Date.now()})
         .run()
         .then(function(response) {
@@ -82,7 +82,7 @@ var newUser = function(cid, onUserSaved, onUserSavedError, cpt) {
 
 
 var userIn = function(cid, onUserSaved, onUserSavedError) {
-    if (cid.name != "") {
+    if (cid.user != "") {
         updateUser(cid, onUserSaved, onUserSavedError);
     } else {
         newUser(cid, onUserSaved, onUserSavedError);

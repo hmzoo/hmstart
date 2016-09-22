@@ -18,7 +18,8 @@ module.exports = React.createClass({
     },
     handleSubmit: function(e) {
         e.preventDefault();
-        this.props.onJoin({text: this.state.textValue});
+        e.stopPropagation();
+        this.props.onJoin({name: this.state.textValue});
         this.clearText();
     },
 

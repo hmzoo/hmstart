@@ -2,7 +2,7 @@ var socketio = require('socket.io');
 var db, io
 
 var hnum=require('./hnum.js');
-//var hrooms=require('./hrooms.js');
+var hrooms=require('./hroom.js');
 
 
 var onUserSaved=function(data){

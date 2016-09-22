@@ -18,6 +18,7 @@ module.exports = React.createClass({
     },
     handleSubmit: function(e) {
         e.preventDefault();
+        e.stopPropagation();
         this.props.onSubmit({text: this.state.textValue});
         this.clearText();
     },
