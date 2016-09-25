@@ -23,4 +23,4 @@ app.get('/', function(req, res) {
 server.listen(8088);
 hio(server,hdb);
 
-console.log("Server started ...");
+console.log("Server started, listening on 8088 ...");

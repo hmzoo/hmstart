@@ -53,7 +53,7 @@ gulp.task('browserify', function() {
 
 gulp.task('watch',function(){
   gulp.watch(['app/server/*.js'],['server']);
-  gulp.watch(['app/client/*.js'],['browserify']);
+  gulp.watch(['app/client/*.js','app/client/views/*.jsx'],['browserify']);
   gulp.watch(['app/style.less'],['less']);
   gulp.watch(['app/views/*.jade'],['pug']);
 })

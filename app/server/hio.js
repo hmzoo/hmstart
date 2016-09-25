@@ -5,13 +5,13 @@ var hnum=require('./hnum.js');
 var hrooms=require('./hroom.js');
 
 
-var onUserSaved=function(data){
-  console.log("userSaved",data);
-  io.sockets.connected[data.socketId].emit("yourId", {name:data.name});
+var onUserSaved=function(socketId,userName){
+  console.log("userSaved",userName);
+  io.sockets.connected[socketId].emit("yourId", {userName:userName});
 }
 
-var onUserSavedError=function(data){
-  console.log("userSavedError",data);
+var onUserSavedError=function(socketId,error){
+  console.log("userSavedError",error);
 }
 
 

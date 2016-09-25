@@ -7,23 +7,21 @@ var r = require('rethinkdbdash')({
 
 var updateUser = function(cid, onUserSaved, onUserSavedError, cpt) {
     r.table("Users")
-        .filter({name: cid.user,secret:cid.secret})
+        .filter({name: cid.un,secret:cid.s})
         .update({socketId:cid.socketId,updatedAt: Date.now()})
         .run()
         .then(function(response) {
           console.log("updateUser",response);
           if(response.replaced>0){
-            onUserSaved(cid);
+            onUserSaved(cid.socketId,cid.un);
           }else{
             newUser(cid, onUserSaved, onUserSavedError);
           }
 
         })
         .error(function(err) {
-            onUserSavedError({
-                socketId: cid.socketId,
-                err: "db error"
-            });
+            onUserSavedError(cid.socketId,"db error"
+            );
 
         });
 }
@@ -32,16 +30,13 @@ var newUser = function(cid, onUserSaved, onUserSavedError, cpt) {
     console.log("hnum", cpt);
     var cpt = (typeof cpt === 'undefined') ? 0 : cpt;
     if (cpt > 50) {
-        onUserSavedError({
-            socketId: cid.socketId,
-            err: "db full"
-        });
+        onUserSavedError(cid.socketId,"db full");
         return
     }
     var data = {
         name: (Math.floor(Math.random() * 90000) + 10000).toString(),
         socketId: cid.socketId,
-        secret: cid.secret,
+        secret: cid.s,
         createAt: Date.now(),
         updatedAt: Date.now()
     };
@@ -58,31 +53,29 @@ var newUser = function(cid, onUserSaved, onUserSavedError, cpt) {
                     .run()
                     .then(function(response) {
                         console.log('Insert success ', response);
-                        onUserSaved(data);
+                        onUserSaved(cid.socketId,data.name);
                     })
                     .error(function(err) {
-                        onUserSavedError({
-                            socketId: cid.socketId,
-                            err: "db error"
-                        });
-                        console.log('error occurred ', err);
+                        onUserSavedError(cid.socketId,"db error"
+                        );
+
                     })
             }
 
         })
         .error(function(err) {
-            onUserSavedError({
-                socketId: cid.socketId,
-                err: "db error"
-            });
-            console.log('error occurred ', err);
+            onUserSavedError(cid.socketId,
+                "db error"
+            );
+
         })
 
 }
 
 
 var userIn = function(cid, onUserSaved, onUserSavedError) {
-    if (cid.user != "") {
+  
+    if (cid.un != "") {
         updateUser(cid, onUserSaved, onUserSavedError);
     } else {
         newUser(cid, onUserSaved, onUserSavedError);
