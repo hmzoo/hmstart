@@ -58,3 +58,21 @@
 2016-09-25T23:20:47.649843784 17947.849501s notice: All client connections closed.
 2016-09-25T23:20:47.649853642 17947.849510s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
 2016-09-25T23:20:47.672422098 17947.872079s notice: Storage engine shut down.
+2016-09-26T15:24:52.876378450 0.218334s notice: Running rethinkdb 2.3.5~0xenial (GCC 5.3.1)...
+2016-09-26T15:24:52.879435798 0.221394s notice: Running on Linux 4.4.0-21-generic x86_64
+2016-09-26T15:24:52.879490170 0.221445s notice: Loading data from directory /home/hmj/projets/hmstart/dist/rethinkdb_data
+2016-09-26T15:24:53.086309529 0.428265s info: Automatically using cache size of 1003 MB
+2016-09-26T15:24:53.088536398 0.430491s notice: Listening for intracluster connections on port 29015
+2016-09-26T15:24:53.254932247 0.596887s notice: Listening for client driver connections on port 28015
+2016-09-26T15:24:53.255086486 0.597041s notice: Listening for administrative HTTP connections on port 8080
+2016-09-26T15:24:53.255089185 0.597044s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-26T15:24:53.255091392 0.597046s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-26T15:24:53.255093582 0.597048s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2016-09-26T15:24:53.255095803 0.597051s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-09-26T15:24:53.255098518 0.597053s notice: Server ready, "UINF03_av7" 5e322299-9ad3-457f-8b6f-1784d1d24395
+2016-09-26T15:24:54.410915156 1.752870s info: Table 67561280-81a0-4272-b811-828dcb6de71c: Starting a new Raft election for term 3.
+2016-09-26T15:24:54.467809840 1.809765s info: Table 67561280-81a0-4272-b811-828dcb6de71c: This server is Raft leader for term 3. Latest log index is 6.
+2016-09-26T15:24:54.877150478 2.219106s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: Starting a new Raft election for term 3.
+2016-09-26T15:24:55.051278663 2.393234s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: This server is Raft leader for term 3. Latest log index is 6.
+2016-09-26T15:24:55.051278664 2220.606623s warn: Some RethinkDB data on this server has been placed into swap memory. This may impact performance.
+2016-09-26T15:42:57.195819039 8280.598228s warn: Some RethinkDB data on this server has been placed into swap memory. This may impact performance.

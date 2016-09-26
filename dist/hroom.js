@@ -4,28 +4,48 @@ var r = require('rethinkdbdash')({
     db: "hmstart"
 });
 
-var newRoom=function(cid,data,onRoomSaved,onRoomSavedError){
-  r.table("Rooms").insert(data)
+
+var hroom={
+  on:function(actionName,action){
+    this[actionName]=action;
+  },
+  roomJoined:function(sid,data){},
+  roomCreated: function(sid,data){},
+  roomError:function(sid,error){},
+
+
+
+}
+hroom.newRoom=function(data){
+  r.table("Rooms").insert(data.content)
       .run()
       .then(function(response) {
           console.log('Insert success ', response);
-          onRoomSaved(cid,data);
+          hroom.roomCreated(data.sid,response);
       })
       .error(function(err) {
         console.log('NewRoom ERROR ', err);
-        onRoomSavedError(cid,data,err);
+          hroom.roomError(data.sid,'DB ERROR');
       });
 
 }
 
-var joinRoom=function(cid,data,onRoomJoined,onRoomJoinedError){
+hroom.joinRoom=function(data){
 
-  r.table("Rooms").get(data.name)
-    .run().then(function(reponse){
-      console.log('getRoom:', reponse);
+  r.table("Rooms").get(data.content.name)
+    .run().then(function(response){
+      console.log('getRoom:', response);
+
+      if(response!=null){
+          hroom.roomJoined(data.sid,response);
+      }else{
+        console.log("newRoom",data);
+          hroom.newRoom(data);
+      }
     })
     .error(function(err){
       console.log('getRoom ERROR ', err);
+      hroom.roomError(cid,'DB ERROR');
     });
   /*
   r.table("Rooms").insert(data)
@@ -42,7 +62,4 @@ var joinRoom=function(cid,data,onRoomJoined,onRoomJoinedError){
 
 }
 
-module.exports ={
-  newRoom:newRoom,
-  joinRoom:joinRoom
-}
+module.exports = hroom;

@@ -1,8 +1,8 @@
 var socketio = require('socket.io');
-var db, io
+var  io
 
 var hnum=require('./hnum.js');
-var hrooms=require('./hroom.js');
+var hroom=require('./hroom.js');
 
 
 var onUserSaved=function(socketId,userName){
@@ -15,9 +15,25 @@ var onUserSavedError=function(socketId,error){
 }
 
 
+hroom.on("roomJoined",function(sid,data){
+  console.log("user join",data);
+  io.sockets.connected[sid].emit("roomJoined", data);
+});
 
-module.exports = function(server,database){
-  db=database;
+hroom.on("roomCreated",function(sid,data){
+  console.log("user join",data);
+  io.sockets.connected[sid].emit("roomCreated", data);
+});
+
+hroom.on("roomError",function(sid,error){
+  console.log("roomError",error);
+});
+
+
+
+
+module.exports = function(server){
+
   io=socketio.listen(server);
 
 
@@ -42,8 +58,9 @@ module.exports = function(server,database){
     });
 
     client.on('joinRoom', function(data){
-      data.socketId=client.id;
-      hnum.userIn(data,onUserSaved,onUserSavedError);
+      if(!(data.cid&&data.content)){return;}
+      data.sid=client.id;
+      hroom.joinRoom(data);
     });
 
 

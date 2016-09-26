@@ -9,7 +9,7 @@ var JoinBox = require('./joinbox.jsx');
 
 var mainView = {
     on:function(actionName,action){
-      this[actionName]=action
+      this[actionName]=action;
     },
 
     setName: function(text) {

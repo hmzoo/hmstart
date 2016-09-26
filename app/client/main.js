@@ -17,6 +17,14 @@ socket.on('yourId', function(msg) {
     mainView.setName(hcid.userName);
 });
 
+socket.on('roomJoined', function(data) {
+  console.log(data);
+});
+
+socket.on('roomCreated', function(data) {
+  console.log(data);
+});
+
 //View events
 mainView.on('sendMessage',function(content) {
         console.log(content);

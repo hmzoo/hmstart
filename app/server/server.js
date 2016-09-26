@@ -7,7 +7,7 @@ var helmet = require('helmet');
 app.use(helmet());
 
 var hio= require('./hio.js');
-var hdb= require('./hdb.js');
+
 
 
 
@@ -21,6 +21,6 @@ app.get('/', function(req, res) {
 
 
 server.listen(8088);
-hio(server,hdb);
+hio(server);
 
 console.log("Server started, listening on 8088 ...");

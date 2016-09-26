@@ -17,26 +17,27 @@ module.exports = React.createClass({
 
     },
     handleSubmit: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.props.onJoin({name: this.state.textValue});
+      e.preventDefault();
+      e.stopPropagation();
+        this.props.onJoinRoom({name: this.state.textValue});
         this.clearText();
     },
 
     render: function() {
         return (
-            <form action="" onSubmit={this.handleSubmit}  >
 
+            <form action="" onSubmit={this.handleSubmit}  >
                 <div className="grid">
                     <div className="grid-item 10/12">
                         <input id="joininput" className="form-input" type="text" placeholder="Type here" onChange={this.onChange} value={this.state.textValue}  ></input>
                     </div>
                     <div className="grid-item 2/12">
-                        <button type="submit" className="btn  btn-primary">Join</button>
+                        <button className="btn  btn-primary" type="submit">Join</button>
                     </div>
                 </div>
+              </form>
 
-            </form>
+
         );
     }
 });
