@@ -18,6 +18,7 @@ socket.on('yourId', function(msg) {
 });
 
 socket.on('roomJoined', function(data) {
+  hcid.setRoomName(data.name);
   console.log(data);
 });
 

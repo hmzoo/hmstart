@@ -76,3 +76,4 @@
 2016-09-26T15:24:55.051278663 2.393234s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: This server is Raft leader for term 3. Latest log index is 6.
 2016-09-26T15:24:55.051278664 2220.606623s warn: Some RethinkDB data on this server has been placed into swap memory. This may impact performance.
 2016-09-26T15:42:57.195819039 8280.598228s warn: Some RethinkDB data on this server has been placed into swap memory. This may impact performance.
+2016-09-26T17:36:57.200750271 15120.603158s warn: Some RethinkDB data on this server has been placed into swap memory. This may impact performance.
