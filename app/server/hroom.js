@@ -12,6 +12,7 @@ var hroom = {
     roomJoined: function(sid, data) {},
     roomCreated: function(sid, data) {},
     roomError: function(sid, error) {},
+    listUpdated: function(bid, data) {},
 }
 
 hroom.newRoom = function(data) {
@@ -23,7 +24,7 @@ hroom.newRoom = function(data) {
             hroom.joinRoom(data);
         })
         .error(function(err) {
-            console.log('NewRoom ERROR ', err);
+            console.log(err);
             hroom.roomError(data.sid, 'DB ERROR');
         });
 
@@ -47,14 +48,15 @@ hroom.joinRoom = function(data) {
             }
         })
         .error(function(err) {
-            console.log('getRoom ERROR ', err);
-            hroom.roomError(cid, 'DB ERROR');
+            console.log(err);
+            hroom.roomError(data.sid, 'DB ERROR');
         });
 
 
 }
 
 var updateUserRoom = function(data) {
+  console.log(data);
     r.table("Users")
         .filter({
             name: data.cid.un,
@@ -71,6 +73,7 @@ var updateUserRoom = function(data) {
                 hroom.roomJoined(data.sid, {
                     name: data.content.name
                 });
+                monitorRoom(data.content.name);
             } else {
                 hroom.roomError(data.sid, 'DB ERROR');
             }
@@ -78,8 +81,25 @@ var updateUserRoom = function(data) {
         })
         .error(function(err) {
             hroom.roomError(data.sid, 'DB ERROR');
+            console.log(err);
 
         });
+
+}
+
+var monitorRoom=function(rn){
+  console.log("MONITTEST")
+  r.table("Users")
+  .filter({
+      room: rn
+  })
+  .pluck('name')
+
+      .run()
+      .then(function(response){
+        console.log("MONIT",response);
+        hroom.listUpdated(rn, response);
+      });
 
 }
 

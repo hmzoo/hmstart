@@ -1,4 +1,8 @@
-var r = require('rethinkdbdash')({port: 28015, host: 'localhost', db: "hmstart"});
+var r = require('rethinkdbdash')({
+    port: 28015,
+    host: 'localhost',
+    db: "hmstart"
+});
 
 var hnum = {
     on: function(actionName, action) {
@@ -9,12 +13,20 @@ var hnum = {
 }
 
 hnum.updateUser = function(data, cpt) {
-    r.table("Users").filter({name: data.cid.un, secret: data.cid.s}).update({sid: data.sid, room: data.cid.rn, updatedAt: Date.now()}).run().then(function(response) {
+  console.log(data);
+    r.table("Users").filter({
+        name: data.cid.un,
+        secret: data.cid.s
+    }).update({
+        sid: data.sid,
+        room: data.cid.rn,
+        updatedAt: Date.now()
+    }).run().then(function(response) {
         console.log("updateUser", response);
         if (response.replaced > 0) {
-            hnum.userserSaved(data.sid, {
-                userName: cid.un,
-                roomName: cid.rn
+            hnum.userSaved(data.sid, {
+                userName: data.cid.un,
+                roomName: data.cid.rn
             });
         } else {
             hnum.newUser(data);
@@ -28,9 +40,9 @@ hnum.updateUser = function(data, cpt) {
 
 hnum.newUser = function(data, cpt) {
     console.log("hnum", cpt);
-    var cpt = (typeof cpt === 'undefined')
-        ? 0
-        : cpt;
+    var cpt = (typeof cpt === 'undefined') ?
+        0 :
+        cpt;
     if (cpt > 50) {
         hnum.useError(data.sid, "DB FULL");
         return
@@ -49,7 +61,7 @@ hnum.newUser = function(data, cpt) {
         if (response) {
             hnum.newUser(data, cpt + 1);
         } else {
-            r.table("Users").insert(data).run().then(function(response) {
+            r.table("Users").insert(udata).run().then(function(response) {
                 console.log('Insert success ', response);
                 hnum.userSaved(data.sid, {
                     userName: udata.name,

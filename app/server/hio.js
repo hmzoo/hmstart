@@ -6,9 +6,9 @@ var hroom=require('./hroom.js');
 
 //HNUM
 hnum.on("userSaved",function(sid,data){
-  console.log("userSaved",userName);
+  console.log("userSaved",data.userName);
   io.sockets.connected[sid].emit("yourId", data);
-}
+});
 
 hnum.on("userError",function(sid,error){
   console.log("userError",error);
@@ -27,6 +27,10 @@ hroom.on("roomCreated",function(sid,data){
 
 hroom.on("roomError",function(sid,error){
   console.log("roomError",error);
+});
+
+hroom.on("listUpdated",function(bid,data){
+  io.emit('roomList',data);
 });
 
 
@@ -55,7 +59,7 @@ module.exports = function(server){
     client.on('IdWanted', function(data){
       if(!(data.cid&&data.content)){return;}
       data.sid=client.id;
-      hnum.userIn(data,onUserSaved,onUserSavedError);
+      hnum.userIn(data);
     });
 
     client.on('joinRoom', function(data){

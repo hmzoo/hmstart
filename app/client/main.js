@@ -13,18 +13,26 @@ socket.on('msg', function(msg) {
     mainView.newMessage(msg);
 });
 socket.on('yourId', function(msg) {
+
     hcid.setUserName(msg.userName);
     hcid.setRoomName(msg.roomName);
-    mainView.setName(hcid.userName);
+    mainView.setUserName(hcid.userName);
+    console.log("yourId",hcid.userName);
 });
 
 socket.on('roomJoined', function(data) {
   hcid.setRoomName(data.name);
+  mainView.setRoomName(hcid.roomName);
   console.log(data);
 });
 
 socket.on('roomCreated', function(data) {
   console.log(data);
+
+});
+socket.on('roomList', function(data) {
+  console.log(data);
+  mainView.setList(data);
 });
 
 //View events

@@ -1,20 +1,20 @@
 var socketio = require('socket.io');
-var  io
+var  io;
 
 var hnum=require('./hnum.js');
 var hroom=require('./hroom.js');
 
+//HNUM
+hnum.on("userSaved",function(sid,data){
+  console.log("userSaved",data.userName);
+  io.sockets.connected[sid].emit("yourId", data);
+});
 
-var onUserSaved=function(socketId,userName){
-  console.log("userSaved",userName);
-  io.sockets.connected[socketId].emit("yourId", {userName:userName});
-}
+hnum.on("userError",function(sid,error){
+  console.log("userError",error);
+});
 
-var onUserSavedError=function(socketId,error){
-  console.log("userSavedError",error);
-}
-
-
+//HROOM
 hroom.on("roomJoined",function(sid,data){
   console.log("user join",data);
   io.sockets.connected[sid].emit("roomJoined", data);
@@ -27,6 +27,10 @@ hroom.on("roomCreated",function(sid,data){
 
 hroom.on("roomError",function(sid,error){
   console.log("roomError",error);
+});
+
+hroom.on("listUpdated",function(bid,data){
+  io.emit('roomList',data);
 });
 
 
@@ -53,8 +57,9 @@ module.exports = function(server){
     });
 
     client.on('IdWanted', function(data){
-      data.socketId=client.id;
-      hnum.userIn(data,onUserSaved,onUserSavedError);
+      if(!(data.cid&&data.content)){return;}
+      data.sid=client.id;
+      hnum.userIn(data);
     });
 
     client.on('joinRoom', function(data){
