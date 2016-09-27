@@ -7,13 +7,14 @@ var mainView = require('./views/mainview.jsx');
 socket.on('connect', function() {
     console.log('Connected successfully to the socket.io server.');
     hcid.load();
-    socket.emit('IdWanted', hcid.get());
+    socket.emit('IdWanted', hcid.msg({}));
 });
 socket.on('msg', function(msg) {
     mainView.newMessage(msg);
 });
 socket.on('yourId', function(msg) {
     hcid.setUserName(msg.userName);
+    hcid.setRoomName(msg.roomName);
     mainView.setName(hcid.userName);
 });
 

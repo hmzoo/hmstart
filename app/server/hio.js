@@ -1,20 +1,20 @@
 var socketio = require('socket.io');
-var  io
+var  io;
 
 var hnum=require('./hnum.js');
 var hroom=require('./hroom.js');
 
-
-var onUserSaved=function(socketId,userName){
+//HNUM
+hnum.on("userSaved",function(sid,data){
   console.log("userSaved",userName);
-  io.sockets.connected[socketId].emit("yourId", {userName:userName});
+  io.sockets.connected[sid].emit("yourId", data);
 }
 
-var onUserSavedError=function(socketId,error){
-  console.log("userSavedError",error);
-}
+hnum.on("userError",function(sid,error){
+  console.log("userError",error);
+});
 
-
+//HROOM
 hroom.on("roomJoined",function(sid,data){
   console.log("user join",data);
   io.sockets.connected[sid].emit("roomJoined", data);
@@ -53,7 +53,8 @@ module.exports = function(server){
     });
 
     client.on('IdWanted', function(data){
-      data.socketId=client.id;
+      if(!(data.cid&&data.content)){return;}
+      data.sid=client.id;
       hnum.userIn(data,onUserSaved,onUserSavedError);
     });
 

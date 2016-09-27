@@ -1,96 +1,82 @@
-var r = require('rethinkdbdash')({
-    port: 28015,
-    host: 'localhost',
-    db: "hmstart"
-});
+var r = require('rethinkdbdash')({port: 28015, host: 'localhost', db: "hmstart"});
 
-
-var updateUser = function(cid, onUserSaved, onUserSavedError, cpt) {
-    r.table("Users")
-        .filter({name: cid.un,secret:cid.s})
-        .update({socketId:cid.socketId,updatedAt: Date.now()})
-        .run()
-        .then(function(response) {
-          console.log("updateUser",response);
-          if(response.replaced>0){
-            onUserSaved(cid.socketId,cid.un);
-          }else{
-            newUser(cid, onUserSaved, onUserSavedError);
-          }
-
-        })
-        .error(function(err) {
-            onUserSavedError(cid.socketId,"db error"
-            );
-
-        });
+var hnum = {
+    on: function(actionName, action) {
+        this[actionName] = action;
+    },
+    userSaved: function(sid, data) {},
+    userError: function(sid, error) {}
 }
 
-var newUser = function(cid, onUserSaved, onUserSavedError, cpt) {
+hnum.updateUser = function(data, cpt) {
+    r.table("Users").filter({name: data.cid.un, secret: data.cid.s}).update({sid: data.sid, room: data.cid.rn, updatedAt: Date.now()}).run().then(function(response) {
+        console.log("updateUser", response);
+        if (response.replaced > 0) {
+            hnum.userserSaved(data.sid, {
+                userName: cid.un,
+                roomName: cid.rn
+            });
+        } else {
+            hnum.newUser(data);
+        }
+
+    }).error(function(err) {
+        hnum.useError(data.sid, "DB ERROR");
+
+    });
+}
+
+hnum.newUser = function(data, cpt) {
     console.log("hnum", cpt);
-    var cpt = (typeof cpt === 'undefined') ? 0 : cpt;
+    var cpt = (typeof cpt === 'undefined')
+        ? 0
+        : cpt;
     if (cpt > 50) {
-        onUserSavedError(cid.socketId,"db full");
+        hnum.useError(data.sid, "DB FULL");
         return
     }
-    var data = {
+    var udata = {
         name: (Math.floor(Math.random() * 90000) + 10000).toString(),
-        socketId: cid.socketId,
-        secret: cid.s,
+        room: data.cid.rn,
+        sid: data.sid,
+        secret: data.cid.s,
         createAt: Date.now(),
         updatedAt: Date.now()
     };
 
-    r.table("Users")
-        .get(data.name)
-        .run()
-        .then(function(response) {
-            console.log('Get success ', response);
-            if (response) {
-                newUser(cid, onUserSaved, onUserSavedError, cpt + 1);
-            } else {
-                r.table("Users").insert(data)
-                    .run()
-                    .then(function(response) {
-                        console.log('Insert success ', response);
-                        onUserSaved(cid.socketId,data.name);
-                    })
-                    .error(function(err) {
-                        onUserSavedError(cid.socketId,"db error"
-                        );
+    r.table("Users").get(udata.name).run().then(function(response) {
+        console.log('Get success ', response);
+        if (response) {
+            hnum.newUser(data, cpt + 1);
+        } else {
+            r.table("Users").insert(data).run().then(function(response) {
+                console.log('Insert success ', response);
+                hnum.userSaved(data.sid, {
+                    userName: udata.name,
+                    roomName: udata.room
+                });
+            }).error(function(err) {
+                hnum.useError(data.sid, "DB ERROR");
 
-                    })
-            }
+            })
+        }
 
-        })
-        .error(function(err) {
-            onUserSavedError(cid.socketId,
-                "db error"
-            );
+    }).error(function(err) {
+        hnum.useError(data.sid, "DB ERROR");
 
-        })
+    })
 
 }
 
+hnum.userIn = function(data) {
 
-var userIn = function(cid, onUserSaved, onUserSavedError) {
-  
-    if (cid.un != "") {
-        updateUser(cid, onUserSaved, onUserSavedError);
+    if (data.cid.un != "") {
+        hnum.updateUser(data);
     } else {
-        newUser(cid, onUserSaved, onUserSavedError);
+        hnum.newUser(data);
     }
 }
 
-var userOut =function(){
+hnum.userOut = function() {}
 
-}
-
-
-module.exports = {
-
-  userIn:userIn,
-  userOut:userOut
-
-
-};
+module.exports = hnum;

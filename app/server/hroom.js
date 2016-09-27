@@ -12,8 +12,8 @@ var hroom = {
     roomJoined: function(sid, data) {},
     roomCreated: function(sid, data) {},
     roomError: function(sid, error) {},
-
 }
+
 hroom.newRoom = function(data) {
     r.table("Rooms").insert(data.content)
         .run()
