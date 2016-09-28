@@ -23,6 +23,11 @@ hnum.on("userLeave",function(data){
 hroom.on("roomJoined",function(sid,data){
   console.log("user join",data);
   io.sockets.connected[sid].emit("roomJoined", data);
+  if(io.sockets.connected[sid].room){
+    io.sockets.connected[sid].leave(io.sockets.connected[sid].room);
+  }
+  io.sockets.connected[sid].room=data.name;
+  io.sockets.connected[sid].join(data.name);
 });
 
 hroom.on("roomCreated",function(sid,data){
@@ -35,7 +40,7 @@ hroom.on("roomError",function(sid,error){
 });
 
 hroom.on("listUpdated",function(bid,data){
-  io.emit('roomList',data);
+  io.in(bid).emit('roomList',data);
 });
 
 
@@ -58,7 +63,10 @@ module.exports = function(server){
     });
 
     client.on('msg', function(data){
-      io.emit('msg',data.content);
+      if(io.sockets.connected[client.id].room){
+        io.in(io.sockets.connected[client.id].room).emit('msg',data.content);
+      }
+      io.in().emit('msg',data.content);
       console.log('msg',data);
     });
 

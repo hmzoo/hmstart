@@ -132,3 +132,8 @@
 2016-09-28T16:20:54.650661712 2.509220s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: This server is Raft leader for term 6. Latest log index is 15.
 2016-09-28T16:57:19.866112513 2187.724671s info: Table 3cef5e5b-5394-4ad1-863a-dcd17b9515cd: Configuration is changing.
 2016-09-28T17:56:52.891381808 5760.749941s warn: Some RethinkDB data on this server has been placed into swap memory. This may impact performance.
+2016-09-28T18:41:06.013630684 8413.872190s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2016-09-28T18:41:06.013858941 8413.872418s notice: Shutting down client connections...
+2016-09-28T18:41:06.034624817 8413.893184s notice: All client connections closed.
+2016-09-28T18:41:06.034638809 8413.893198s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2016-09-28T18:41:06.106066532 8413.964626s notice: Storage engine shut down.
