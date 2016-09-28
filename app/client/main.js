@@ -15,8 +15,11 @@ socket.on('msg', function(msg) {
 socket.on('yourId', function(msg) {
 
     hcid.setUserName(msg.userName);
-    hcid.setRoomName(msg.roomName);
     mainView.setUserName(hcid.userName);
+    if(msg.roomName){
+    hcid.setRoomName(msg.roomName);
+    mainView.setRoomName(hcid.roomName);
+  }
     console.log("yourId",hcid.userName);
 });
 

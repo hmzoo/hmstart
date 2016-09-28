@@ -24,6 +24,14 @@ r.tableCreate('Users',{ primaryKey: 'name' })
 .error(function(err){
 	console.log('error while creating table ',err)
 })
+r.table('Users').indexCreate('sid')
+.run()
+.then(function(response){
+	console.log(response)
+})
+.error(function(err){
+	console.log('error while creating index ',err)
+})
 
 
 r.tableCreate('Rooms',{ primaryKey: 'name' })

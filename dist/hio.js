@@ -7,11 +7,16 @@ var hroom=require('./hroom.js');
 //HNUM
 hnum.on("userSaved",function(sid,data){
   console.log("userSaved",data.userName);
-  io.sockets.connected[sid].emit("yourId", data);
+  io.sockets.connected[sid].emit("yourId", {userName:data.cid.un,roomName:data.cid.rn});
+
 });
 
 hnum.on("userError",function(sid,error){
   console.log("userError",error);
+});
+hnum.on("userLeave",function(data){
+  console.log("userLeave",data);
+  hroom.monitorRoom(data.room);
 });
 
 //HROOM
@@ -48,7 +53,8 @@ module.exports = function(server){
 
     client.on('disconnect', function(){
       connected=false;
-      console.log('user disconnected '+client.id);
+      console.log('User disconnected '+client.id);
+      hnum.userOut(client.id);
     });
 
     client.on('msg', function(data){

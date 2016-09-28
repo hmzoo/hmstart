@@ -73,7 +73,8 @@ var updateUserRoom = function(data) {
                 hroom.roomJoined(data.sid, {
                     name: data.content.name
                 });
-                monitorRoom(data.content.name);
+                hroom.monitorRoom(data.cid.rn);
+                hroom.monitorRoom(data.content.name);
             } else {
                 hroom.roomError(data.sid, 'DB ERROR');
             }
@@ -87,11 +88,13 @@ var updateUserRoom = function(data) {
 
 }
 
-var monitorRoom=function(rn){
+hroom.monitorRoom=function(rn){
+  if(rn==""){return;}
   console.log("MONITTEST")
   r.table("Users")
   .filter({
-      room: rn
+      room: rn,
+      online:true
   })
   .pluck('name')
 

@@ -9,25 +9,24 @@ var hnum = {
         this[actionName] = action;
     },
     userSaved: function(sid, data) {},
+    userLeave: function(data) {},
     userError: function(sid, error) {}
 }
 
 hnum.updateUser = function(data, cpt) {
-  console.log(data);
+    console.log(data);
     r.table("Users").filter({
         name: data.cid.un,
         secret: data.cid.s
     }).update({
         sid: data.sid,
         room: data.cid.rn,
+        online: true,
         updatedAt: Date.now()
     }).run().then(function(response) {
         console.log("updateUser", response);
         if (response.replaced > 0) {
-            hnum.userSaved(data.sid, {
-                userName: data.cid.un,
-                roomName: data.cid.rn
-            });
+            hnum.userSaved(data.sid, data);
         } else {
             hnum.newUser(data);
         }
@@ -47,11 +46,13 @@ hnum.newUser = function(data, cpt) {
         hnum.useError(data.sid, "DB FULL");
         return
     }
+    data.cid.un=(Math.floor(Math.random() * 90000) + 10000).toString();
     var udata = {
-        name: (Math.floor(Math.random() * 90000) + 10000).toString(),
+        name: data.cid.un,
         room: data.cid.rn,
         sid: data.sid,
         secret: data.cid.s,
+        online: true,
         createAt: Date.now(),
         updatedAt: Date.now()
     };
@@ -63,10 +64,7 @@ hnum.newUser = function(data, cpt) {
         } else {
             r.table("Users").insert(udata).run().then(function(response) {
                 console.log('Insert success ', response);
-                hnum.userSaved(data.sid, {
-                    userName: udata.name,
-                    roomName: udata.room
-                });
+                hnum.userSaved(data.sid, data);
             }).error(function(err) {
                 hnum.useError(data.sid, "DB ERROR");
 
@@ -89,6 +87,24 @@ hnum.userIn = function(data) {
     }
 }
 
-hnum.userOut = function() {}
+hnum.userOut = function(sid) {
+
+    r.table("Users")
+        .getAll(sid, {
+            index: "sid"
+        }).update({
+            online: false
+        }, {
+            returnChanges: true
+        })
+        .run().then(function(response) {
+            if (response.changes && response.changes.length > 0) {
+              //  console.log(response.changes[0].new_val);
+                hnum.userLeave(response.changes[0].new_val);
+            }
+        });
+
+
+}
 
 module.exports = hnum;
