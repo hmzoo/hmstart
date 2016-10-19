@@ -10,7 +10,7 @@ var source = require('vinyl-source-stream');
 gulp.task('default', ['watch']);
 
 gulp.task('client_lib', function() {
-    return gulp.src([ ]).pipe(gulp.dest('./dist/lib'));
+    return gulp.src(['node_modules/react/dist/react.js', 'node_modules/react-dom/dist/react-dom.js']).pipe(gulp.dest('./dist/lib'));
 });
 gulp.task('html', function() {
     return gulp.src(['./src/client/*.html']).pipe(gulp.dest('./dist')).pipe(browserSync.stream());
