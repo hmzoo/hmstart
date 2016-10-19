@@ -7010,3 +7010,7 @@ input[type="submit"].btn-round {
     width: 91.6666666% !important;
   }
 }
+.bord {
+  border: 1px #BBDDFF dashed;
+  height: auto;
+}

@@ -50,7 +50,7 @@ gulp.task('watch', ['build'], function() {
     gulp.watch("./src/client/assets/*.png", ['assets']);
     gulp.watch("./src/client/*.pug", ['pug']);
     gulp.watch([
-        "./src/client/*.js", "./src/client/views/*.jsx"
+        "./src/client/*.less","./src/client/*.pug","./src/client/*.js", "./src/client/views/*.jsx"
     ], ['client']);
     gulp.watch(["./src/server/*.js","src/server/lib/*.js"], ['server']);
 
