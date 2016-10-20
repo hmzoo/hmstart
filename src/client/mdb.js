@@ -23,7 +23,7 @@ module.exports = function() {
             obj.id = id;
             this.tab.push(obj);
             this.tabIndex[id] = this.tab.length - 1;
-            this.onUpdated(tab);
+            this.onUpdated(this.tab);
         } else {
             this.set(id, obj)
         }
@@ -33,7 +33,7 @@ module.exports = function() {
         if (this.exists(id)) {
             this.tab.splice(this.tabIndex[id], 1);
             delete this.tabIndex[id],
-            this.onUpdated(tab);
+            this.onUpdated(this.tab);
         }
     }
 
@@ -48,7 +48,8 @@ module.exports = function() {
             for (var key in obj) {
                 this.tab[this.tabIndex[id]][key] = obj[key];
             }
-            this.tabdb.onUpdated(tab);
+    
+            this.onUpdated(this.tab);
         }
 
     }

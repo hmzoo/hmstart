@@ -1,36 +1,61 @@
 var React = require('react');
 
-
-var show=function(row,col){
-  console.log(row,col,CTL);
-}
-
 var Item = React.createClass({
 
     clicked: function() {
-        show(this.props.row, this.props.col);
+        
+        HMStart.select(this.props.index);
     },
     render: function() {
         return (
 
-            <div className="grid-item 1/12"><div className="box" onClick={this.clicked}> {this.props.data}</div></div>
+            <div className="grid-item 1/12">
+                <div className="box" onClick={this.clicked}>
+                    <b>{this.props.name}</b><br/>{this.props.content}</div>
+            </div>
 
         );
     }
 });
 
-var Row = React.createClass({
+var ItemForm = React.createClass({
+    getInitialState: function() {
+        return {inputValue: this.props.content};
+    },
+    delClicked: function() {
 
+        HMStart.delItem(this.props.name);
+        HMStart.select(null);
+    },
+    componentDidMount: function() {
+      this.refs.itemInput.focus();
+    },
+
+    onChangeInput: function(e) {
+        this.setState({
+            inputValue: e.target.value.substring(0, 64)
+        });
+    },
+    handleSubmit: function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        HMStart.updateItem(this.props.name, {content: this.state.inputValue});
+        HMStart.select(null);
+        //this.props.onSubmit(this.state.inputValue.trim());
+        //this.setState({inputValue: ''});
+    },
     render: function() {
         return (
-            <div className="grid" >
-                <div className="grid-item 2/12">{this.props.name}<br/>{this.props.content}</div>
 
-                {this.props.items.map(function(result, index) {
-                    return (<Item key={index} data={result} row={this.props.name} col={index}  />);
-                }, this)}
-
+            <div className="grid-item 3/12">
+                <div className="box"><span className="fr" onClick={this.delClicked}>{'\u274C'}</span>
+                    <b>{this.props.name}</b><br/>
+                    <form action="" onSubmit={this.handleSubmit}>
+                        <input className="form-input" ref="itemInput" type="text" value={this.state.inputValue} onChange={this.onChangeInput}></input>
+                    </form>
+                </div>
             </div>
+
         );
     }
 });
@@ -44,8 +69,12 @@ module.exports = React.createClass({
         return (
 
             <div id="datalist" className="bord">
-                {this.props.rows.map(function(result) {
-                    return (<Row key={result.id} name={result.name} content={result.content} items={result.items} />);
+                {this.props.items.map(function(result, index) {
+                    if (this.props.selected === index) {
+                        return (<ItemForm key={result.id} name={result.name} content={result.content} index={index}/>);
+                    } else {
+                        return (<Item key={result.id} name={result.name} content={result.content} index={index}/>);
+                    }
                 }, this)}
             </div>
 
