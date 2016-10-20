@@ -28,12 +28,12 @@ tabdb.add = function(id, obj) {
       obj.id=id;
         tab.push(obj);
         index[id] = tab.length - 1;
-
         tabdb.onUpdated(tab);
     }else{
       tabdb.set(id,obj)
     }
 }
+
 tabdb.del = function(id) {
     if (exists(id)) {
         tab.splice(index[id], 1);

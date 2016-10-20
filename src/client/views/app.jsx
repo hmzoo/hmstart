@@ -2,7 +2,7 @@ var DataList=require('./datalist.jsx');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {infos: 'App here !', items: []};
+        return {infos: 'App here !', rows: []};
     },
     setDatas: function(datas) {
         this.setState({items: datas});
@@ -12,7 +12,7 @@ module.exports = React.createClass({
         return (
             <div>
                 {this.state.infos}
-                <DataList rows={this.state.items} />
+                <DataList rows={this.state.rows} />
             </div>
         )
     }
